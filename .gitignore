@@ -1,0 +1,11 @@
+bin/
+obj/
+.vs/
+.idea/
+*.user
+.env
+Logs/
+TestResults/
+allure-results/
+allure-report/
+.token-cache.json

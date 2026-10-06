@@ -1,0 +1,47 @@
+name: API Contract Tests (C#)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Diariamente às 09:00 UTC, para detectar quebras de contrato na API pública
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Test
+        run: >
+          dotnet test --no-build
+          --logger "console;verbosity=normal"
+          --logger "trx;LogFileName=test-results.trx"
+          --logger "html;LogFileName=test-results.html"
+          --results-directory TestResults
+
+      - name: Upload test results and logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-and-logs
+          path: |
+            TestResults/
+            Logs/

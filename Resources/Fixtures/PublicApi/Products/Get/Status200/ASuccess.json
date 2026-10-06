@@ -1,0 +1,13 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "title": "sample",
+      "price": 9.99,
+      "category": "beauty"
+    }
+  ],
+  "total": 194,
+  "skip": 0,
+  "limit": 30
+}
